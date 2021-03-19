@@ -23,26 +23,38 @@ app.listen(port, () => {
 
 router.get("/", (req, res) => {
   client.connect();
-  client.query(
-    "SELECT * FROM public.transaction;",
-    (err, res) => {
-      if (err) throw err;
-      for (let row of res.rows) {
-        console.log(JSON.stringify(row));
-      }
-      client.end();
+  client.query("SELECT * FROM public.transaction;", (err, res) => {
+    if (err) throw err;
+    for (let row of res.rows) {
+      console.log(JSON.stringify(row));
     }
-  );
+    client.end();
+  });
 
   //res.send('Hello world');
 });
 
 router.get("/json", (req, res) => {
+  client.connect();
+  let rawdata = [];
+  client.query("SELECT * FROM public.transaction;", (err, resQuery) => {
+    if (err) throw err;
+    for (let row of resQuery.rows) {
+      rawdata.push(JSON.stringify(row));
+    }
+    let trxData = JSON.parse(rawdata);
+    res.send(trxData);
+    client.end();
+  });
+});
+
+/* for JSON file read
+router.get("/json", (req, res) => {
   let rawdata = fs.readFileSync("./JSON/transactions.json");
   let trxData = JSON.parse(rawdata);
   res.send(trxData);
 });
-
+*/
 router.post("/replace", (req, res) => {
   console.log(req.body);
   let newTrx = JSON.parse(req.body);
