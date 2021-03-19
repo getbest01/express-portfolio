@@ -24,7 +24,7 @@ app.listen(port, () => {
 router.get("/", (req, res) => {
   client.connect();
   client.query(
-    "SELECT * FROM transaction;",
+    "SELECT * FROM public.transaction;",
     (err, res) => {
       if (err) throw err;
       for (let row of res.rows) {
