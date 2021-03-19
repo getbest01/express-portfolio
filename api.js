@@ -31,7 +31,7 @@ router.get("/", (req, res) => {
     client.end();
   });
 
-  //res.send('Hello world');
+  res.send("Hello world");
 });
 
 router.get("/json", (req, res) => {
