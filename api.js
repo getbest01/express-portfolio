@@ -23,9 +23,8 @@ app.listen(port, () => {
 
 router.get("/", (req, res) => {
   client.connect();
-
   client.query(
-    "SELECT table_schema,table_name FROM information_schema.tables;",
+    "SELECT * FROM transaction;",
     (err, res) => {
       if (err) throw err;
       for (let row of res.rows) {
