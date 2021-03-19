@@ -6,6 +6,16 @@ const port = process.env.PORT;
 const app = express();
 const router = express.Router();
 
+const { Client } = require('pg');
+
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false
+  }
+});
+
+
 app.use(cors());
 
 app.listen(port, () => {
@@ -35,3 +45,12 @@ router.post("/replace", (req, res) => {
 
 app.use(`/`, router);;
 
+client.connect();
+
+client.query('SELECT table_schema,table_name FROM information_schema.tables;', (err, res) => {
+  if (err) throw err;
+  for (let row of res.rows) {
+    console.log(JSON.stringify(row));
+  }
+  client.end();
+});
