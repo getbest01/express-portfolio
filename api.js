@@ -13,7 +13,7 @@ app.listen(port, () => {
 });
 
 router.get("/", (req, res) => {
-  res.send("Hello world");
+  //res.send("Hello world");
   const { Client } = require("pg");
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
