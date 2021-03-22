@@ -33,8 +33,16 @@ router.get("/", (req, res) => {
 });
 
 router.get("/json", (req, res) => {
+  const { Client } = require("pg");
+  const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
   client.connect();
   let rawdata = [];
+
   client.query("SELECT * FROM public.transaction;", (err, resQuery) => {
     if (err) throw err;
     for (let row of resQuery.rows) {
