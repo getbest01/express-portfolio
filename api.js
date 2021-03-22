@@ -60,21 +60,26 @@ router.get("/json", (req, res) => {
 //Postgre database write
 router.post("/replace", async (req, res) => {
   try {
+    console.log("post start! - show body")
     console.log(req.body);
     let insertText = "";
 
-    let newTrx = JSON.parse(req.body);
+    let newTrx = await JSON.parse(req.body);
+
     for (let i = 0; i < newTrx.length; i++) {
       insertText += `(${newTrx[i].id},${newTrx[i].fiscalType},${newTrx[i].desc}, ${newTrx[i].dolValue}),`;
+      console.log(insertText)
     }
     insertText.slice(0, -1); //remove last comma
     const client = await pool.connect();
     //delete existing data of the table
     const deleteRes = await client.query("DELETE * FROM public.transaction;");
+    console.log(`delete table result: ${deleteRes}`);
     //replace with the new contents
-    let insertQuery = `INSERT INTO public.transactions VALUES ${insertText};`;
+    let insertQuery = await `INSERT INTO public.transactions VALUES ${insertText};`;
     console.log(insertQuery);
     const insertRes = await client.query(insertQuery);
+    console.log(`insert table result: ${insertRes}`);
     client.release();
   } catch (err) {
     console.error(err);
