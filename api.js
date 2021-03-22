@@ -38,7 +38,7 @@ router.get("/", (req, res) => {
 
 router.get("/json", async (req, res) => {
   try {
-    const client = await pool.connect;
+    const client = await pool.connect();
     const result = await client.query("SELECT * FROM public.transaction;");
     const results = { results: result ? result.rows : null };
 
