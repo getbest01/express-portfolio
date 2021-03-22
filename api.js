@@ -5,6 +5,7 @@ const port = process.env.PORT;
 
 const app = express();
 const router = express.Router();
+var bodyParser = require("body-parser");
 
 const { Pool } = require("pg");
 const pool = new Pool({
