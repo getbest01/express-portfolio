@@ -32,6 +32,7 @@ router.get("/", (req, res) => {
   });
 });
 
+/*
 router.get("/json", (req, res) => {
   let trxData;
   const { Client } = require("pg");
@@ -54,7 +55,7 @@ router.get("/json", (req, res) => {
     res.send(trxData);
   });
 });
-
+*/
 /* for JSON file read
 router.get("/json", (req, res) => {
   let rawdata = fs.readFileSync("./JSON/transactions.json");
