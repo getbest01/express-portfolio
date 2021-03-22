@@ -18,6 +18,8 @@ let trxData;
 let rawdata = [];
 
 app.use(cors());
+app.use(`/`, router);
+app.use(bodyParser.json());
 
 app.listen(port, () => {
   console.log(`Express server is running on port ${port}`);
@@ -100,4 +102,4 @@ router.post("/replace", (req, res) => {
 });
 */
 
-app.use(`/`, router);
+
