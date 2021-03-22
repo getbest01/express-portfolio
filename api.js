@@ -22,7 +22,9 @@ app.listen(port, () => {
 });
 
 router.get("/", (req, res) => {
+  res.send("Hello world");
   client.connect();
+  res.send("Connected to DB");
   client.query("SELECT * FROM public.transaction;", (err, res) => {
     if (err) throw err;
     for (let row of res.rows) {
@@ -31,7 +33,7 @@ router.get("/", (req, res) => {
     client.end();
   });
 
-  res.send("Hello world");
+  
 });
 
 router.get("/json", (req, res) => {
