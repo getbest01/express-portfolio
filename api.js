@@ -34,9 +34,9 @@ router.get("/", (req, res) => {
 });
 */
 
-
 router.get("/json", (req, res) => {
   let trxData;
+  let rawdata = [];
   const { Client } = require("pg");
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
@@ -45,7 +45,7 @@ router.get("/json", (req, res) => {
     },
   });
   client.connect();
-  let rawdata = [];
+
   client.query("SELECT * FROM public.transaction;", (err, resQuery) => {
     if (err) throw err;
     for (let row of resQuery.rows) {
@@ -54,8 +54,8 @@ router.get("/json", (req, res) => {
     }
     trxData = JSON.parse(rawdata);
     client.end();
-    res.send(trxData);
   });
+  res.send(trxData);
 });
 
 /* for JSON file read
