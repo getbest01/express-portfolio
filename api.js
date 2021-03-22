@@ -41,8 +41,7 @@ router.get("/json", async (req, res) => {
     const client = await pool.connect();
     const result = await client.query("SELECT * FROM public.transaction;");
     const results = { results: result ? result.rows : null };
-
-    res.send("Connected to DB");
+    res.send(JSON.parse(results));
     client.release();
   } catch (err) {
     console.error(err);
