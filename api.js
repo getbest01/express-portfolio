@@ -63,7 +63,7 @@ router.post("/replace", async (req, res) => {
   try {
     console.log("post start! - show body")
     console.log(req);
-    console.log(req.body);
+    console.log(req.body.data);
     let insertText = "";
 
     let newTrx = await JSON.parse(req.body);
