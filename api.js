@@ -42,10 +42,10 @@ router.get("/json", (req, res) => {
   });
   client.connect();
   let rawdata = [];
-
   client.query("SELECT * FROM public.transaction;", (err, resQuery) => {
     if (err) throw err;
     for (let row of resQuery.rows) {
+      console.log(JSON.stringify(row));
       rawdata.push(JSON.stringify(row));
     }
     let trxData = JSON.parse(rawdata);
