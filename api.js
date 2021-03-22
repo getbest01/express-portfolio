@@ -6,15 +6,6 @@ const port = process.env.PORT;
 const app = express();
 const router = express.Router();
 
-const { Client } = require("pg");
-
-const client = new Client({
-  connectionString: process.env.DATABASE_URL,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
-
 app.use(cors());
 
 app.listen(port, () => {
@@ -23,6 +14,13 @@ app.listen(port, () => {
 
 router.get("/", (req, res) => {
   res.send("Hello world");
+  const { Client } = require("pg");
+  const client = new Client({
+    connectionString: process.env.DATABASE_URL,
+    ssl: {
+      rejectUnauthorized: false,
+    },
+  });
   client.connect();
   res.send("Connected to DB");
   client.query("SELECT * FROM public.transaction;", (err, res) => {
@@ -32,8 +30,6 @@ router.get("/", (req, res) => {
     }
     client.end();
   });
-
-  
 });
 
 router.get("/json", (req, res) => {
