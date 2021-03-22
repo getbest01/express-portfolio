@@ -6,6 +6,18 @@ const port = process.env.PORT;
 const app = express();
 const router = express.Router();
 
+const { Client } = require("pg");
+const client = new Client({
+  connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+
+let trxData;
+let rawdata = [];
+
 app.use(cors());
 
 app.listen(port, () => {
@@ -14,13 +26,6 @@ app.listen(port, () => {
 
 
 router.get("/", (req, res) => {
-  const { Client } = require("pg");
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
   client.connect();
   res.send("Connected to DB");
   client.query("SELECT * FROM public.transaction;", (err, res) => {
@@ -34,15 +39,6 @@ router.get("/", (req, res) => {
 
 
 router.get("/json", (req, res) => {
-  let trxData;
-  let rawdata = [];
-  const { Client } = require("pg");
-  const client = new Client({
-    connectionString: process.env.DATABASE_URL,
-    ssl: {
-      rejectUnauthorized: false,
-    },
-  });
   client.connect();
   res.send("Connected to DB");
   client.query("SELECT * FROM public.transaction;", (err, res) => {
