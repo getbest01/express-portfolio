@@ -36,6 +36,7 @@ router.get("/", (req, res) => {
   });
 });
 
+//Postgre database read
 router.get("/json", async (req, res) => {
   try {
     const client = await pool.connect();
@@ -57,7 +58,25 @@ router.get("/json", (req, res) => {
 });
 */
 
-/*
+//Postgre database write
+router.post("/replace", async (req, res) => {
+  try {
+    console.log(req.body);
+    let newTrx = JSON.parse(req.body);
+    const client = await pool.connect();
+    const deleteRes = await client.query("DELETE * FROM public.transaction;");
+
+    let insertQuery = `INSERT INTO public.transactions VALUES ${insertQuery};`;
+    const insertRes = await client.query(insertQuery);
+
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
+});
+
+/* for JSON file write
 router.post("/replace", (req, res) => {
   console.log(req.body);
   let newTrx = JSON.parse(req.body);
@@ -69,4 +88,5 @@ router.post("/replace", (req, res) => {
   }
 });
 */
+
 app.use(`/`, router);
