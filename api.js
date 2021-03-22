@@ -7,13 +7,12 @@ const app = express();
 const router = express.Router();
 
 const { Client } = require("pg");
-const client = new Client({
+const pool = new Client({
   connectionString: process.env.DATABASE_URL,
   ssl: {
     rejectUnauthorized: false,
   },
 });
-
 
 let trxData;
 let rawdata = [];
@@ -26,31 +25,29 @@ app.listen(port, () => {
 
 
 router.get("/", (req, res) => {
-  client.connect();
+  const client = pool.connect();
   res.send("Connected to DB");
   client.query("SELECT * FROM public.transaction;", (err, res) => {
     if (err) throw err;
     for (let row of res.rows) {
       console.log(JSON.stringify(row));
     }
-    client.end();
+    client.release();
   });
 });
 
+router.get("/json", async (req, res) => {
+  try {
+    const client = await pool.connect;
+    const result = await client.query("SELECT * FROM public.transaction;");
+    const results = { results: result ? result.rows : null };
 
-router.get("/json", (req, res) => {
-  client.connect();
-  res.send("Connected to DB");
-  client.query("SELECT * FROM public.transaction;", (err, res) => {
-    if (err) throw err;
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-      rawdata.push(JSON.stringify(row));
-    }
-    trxData = JSON.parse(rawdata);
-    client.end();
-  });
-  res.send(trxData);
+    res.send("Connected to DB");
+    client.release();
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
 });
 
 /* for JSON file read
