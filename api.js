@@ -12,9 +12,8 @@ app.listen(port, () => {
   console.log(`Express server is running on port ${port}`);
 });
 
-/*
+
 router.get("/", (req, res) => {
-  //res.send("Hello world");
   const { Client } = require("pg");
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
@@ -32,7 +31,7 @@ router.get("/", (req, res) => {
     client.end();
   });
 });
-*/
+
 
 router.get("/json", (req, res) => {
   let trxData;
@@ -45,10 +44,10 @@ router.get("/json", (req, res) => {
     },
   });
   client.connect();
-
-  client.query("SELECT * FROM public.transaction;", (err, resQuery) => {
+  res.send("Connected to DB");
+  client.query("SELECT * FROM public.transaction;", (err, res) => {
     if (err) throw err;
-    for (let row of resQuery.rows) {
+    for (let row of res.rows) {
       console.log(JSON.stringify(row));
       rawdata.push(JSON.stringify(row));
     }
