@@ -12,6 +12,7 @@ app.listen(port, () => {
   console.log(`Express server is running on port ${port}`);
 });
 
+/*
 router.get("/", (req, res) => {
   //res.send("Hello world");
   const { Client } = require("pg");
@@ -31,8 +32,9 @@ router.get("/", (req, res) => {
     client.end();
   });
 });
+*/
 
-/*
+
 router.get("/json", (req, res) => {
   let trxData;
   const { Client } = require("pg");
@@ -55,7 +57,7 @@ router.get("/json", (req, res) => {
     res.send(trxData);
   });
 });
-*/
+
 /* for JSON file read
 router.get("/json", (req, res) => {
   let rawdata = fs.readFileSync("./JSON/transactions.json");
@@ -63,6 +65,8 @@ router.get("/json", (req, res) => {
   res.send(trxData);
 });
 */
+
+/*
 router.post("/replace", (req, res) => {
   console.log(req.body);
   let newTrx = JSON.parse(req.body);
@@ -73,5 +77,5 @@ router.post("/replace", (req, res) => {
     console.log("JSON file replaced");
   }
 });
-
+*/
 app.use(`/`, router);
