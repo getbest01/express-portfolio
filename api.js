@@ -5,7 +5,6 @@ const port = process.env.PORT;
 
 const app = express();
 const router = express.Router();
-var bodyParser = require("body-parser");
 
 const { Pool } = require("pg");
 const pool = new Pool({
@@ -20,7 +19,6 @@ let rawdata = [];
 
 app.use(cors());
 app.use(`/`, router);
-app.use(bodyParser.json());
 
 app.listen(port, () => {
   console.log(`Express server is running on port ${port}`);
@@ -64,6 +62,7 @@ router.get("/json", (req, res) => {
 router.post("/replace", async (req, res) => {
   try {
     console.log("post start! - show body")
+    console.log(req);
     console.log(req.body);
     let insertText = "";
 
