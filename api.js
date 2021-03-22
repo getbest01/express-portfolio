@@ -33,6 +33,7 @@ router.get("/", (req, res) => {
 });
 
 router.get("/json", (req, res) => {
+  let trxData;
   const { Client } = require("pg");
   const client = new Client({
     connectionString: process.env.DATABASE_URL,
@@ -48,9 +49,9 @@ router.get("/json", (req, res) => {
       console.log(JSON.stringify(row));
       rawdata.push(JSON.stringify(row));
     }
-    let trxData = JSON.parse(rawdata);
-    res.send(trxData);
+    trxData = JSON.parse(rawdata);
     client.end();
+    res.send(trxData);
   });
 });
 
