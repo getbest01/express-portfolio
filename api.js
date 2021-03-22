@@ -23,7 +23,6 @@ app.listen(port, () => {
   console.log(`Express server is running on port ${port}`);
 });
 
-
 router.get("/", (req, res) => {
   const client = pool.connect();
   res.send("Connected to DB");
@@ -62,13 +61,19 @@ router.get("/json", (req, res) => {
 router.post("/replace", async (req, res) => {
   try {
     console.log(req.body);
+    let insertText = "";
+
     let newTrx = JSON.parse(req.body);
+    for (let i = 0; i < newTrx.length; i++) {
+      insertText += `(${newTrx[i].id},${newTrx[i].fiscalType},${newTrx[i].desc}, ${newTrx[i].dolValue}),`;
+    }
+    insertText.slice(0, -1); //remove last comma
     const client = await pool.connect();
+    //delete existing data of the table
     const deleteRes = await client.query("DELETE * FROM public.transaction;");
-
-    let insertQuery = `INSERT INTO public.transactions VALUES ${insertQuery};`;
+    //replace with the new contents
+    let insertQuery = `INSERT INTO public.transactions VALUES ${insertText};`;
     const insertRes = await client.query(insertQuery);
-
     client.release();
   } catch (err) {
     console.error(err);
