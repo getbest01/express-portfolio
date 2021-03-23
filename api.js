@@ -86,18 +86,18 @@ router.post("/replace", async (req, res) => {
     let newTrx = req.body;
     console.log("loop starts!");
     for (let i = 0; i < newTrx.length; i++) {
-      insertText += `(${newTrx[i].id},${newTrx[i].fiscalType},${newTrx[i].desc}, ${newTrx[i].dolValue}),`;
+      insertText += `("${newTrx[i].id}","${newTrx[i].fiscalType}","${newTrx[i].desc}", ${newTrx[i].dolValue}),`;
       console.log(insertText)
     }
     insertText.slice(0, -1); //remove last comma
-    const client = pool.connect();
+    const client = await pool.connect();
     //delete existing data of the table
-    const deleteRes = client.query("DELETE * FROM public.transaction;");
+    const deleteRes = await client.query("DELETE * FROM public.transaction;");
     console.log(`delete table result: ${deleteRes}`);
     //replace with the new contents
     let insertQuery = `INSERT INTO public.transactions VALUES ${insertText};`;
     console.log(insertQuery);
-    const insertRes = client.query(insertQuery);
+    const insertRes = await client.query(insertQuery);
     console.log(`insert table result: ${insertRes}`);
     client.release();
   } catch (err) {
