@@ -77,7 +77,7 @@ router.get("/json", (req, res) => {
 
 
 //Postgre database write
-router.post("/replace", (req, res) => {
+router.post("/replace", async (req, res) => {
   try {
     console.log("post start! - show body")
     console.log(req.body);
