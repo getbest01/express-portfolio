@@ -89,7 +89,7 @@ router.post("/replace", async (req, res) => {
       insertText += `("${newTrx[i].id}","${newTrx[i].fiscalType}","${newTrx[i].desc}", ${newTrx[i].dolValue}),`;
       console.log(insertText)
     }
-    insertText.slice(0, -1); //remove last comma
+    insertText = insertText.slice(0, -1); //remove last comma
     console.log(`insert values after removing last comma: ${insertText}`)
     const client = await pool.connect();
     //delete existing data of the table
