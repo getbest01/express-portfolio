@@ -62,7 +62,7 @@ router.get("/json", (req, res) => {
 router.post("/replace", (req, res) => {
   try {
     console.log("post start! - show body")
-    console.log(req);
+    console.log(req.body);
     let insertText = "";
 
     let newTrx = JSON.parse(req.body);
