@@ -14,10 +14,25 @@ const pool = new Pool({
   },
 });
 
-let trxData;
-let rawdata = [];
+// --> Add this
+// ** MIDDLEWARE ** //
+const whitelist = ['http://localhost:3000']
+const corsOptions = {
+  origin: function (origin, callback) {
+    console.log("** Origin of request " + origin)
+    if (whitelist.indexOf(origin) !== -1 || !origin) {
+      console.log("Origin acceptable")
+      callback(null, true)
+    } else {
+      console.log("Origin rejected")
+      callback(new Error('Not allowed by CORS'))
+    }
+  }
+}
 
-app.use(cors());
+app.use(cors(corsOptions))
+//app.use(cors());
+
 
 
 app.listen(port || 3000, () => {
@@ -51,12 +66,15 @@ router.get("/json", async (req, res) => {
 });
 
 /* for JSON file read
+let trxData;
+let rawdata = [];
 router.get("/json", (req, res) => {
   let rawdata = fs.readFileSync("./JSON/transactions.json");
   let trxData = JSON.parse(rawdata);
   res.send(trxData);
 });
 */
+
 
 //Postgre database write
 router.post("/replace", (req, res) => {
