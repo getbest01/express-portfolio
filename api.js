@@ -83,7 +83,7 @@ router.post("/replace", async (req, res) => {
     console.log(req.body);
     let insertText = "";
 
-    let newTrx = JSON.parse(req.body);
+    let newTrx = req.body;
     console.log("loop starts!");
     for (let i = 0; i < newTrx.length; i++) {
       insertText += `(${newTrx[i].id},${newTrx[i].fiscalType},${newTrx[i].desc}, ${newTrx[i].dolValue}),`;
