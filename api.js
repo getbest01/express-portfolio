@@ -20,7 +20,7 @@ let rawdata = [];
 app.use(cors());
 
 
-app.listen(port, () => {
+app.listen(port || 3000, () => {
   console.log(`Express server is running on port ${port}`);
 });
 
