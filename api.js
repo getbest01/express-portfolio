@@ -32,7 +32,7 @@ const corsOptions = {
 
 app.use(cors(corsOptions))
 //app.use(cors());
-
+app.use(require("body-parser").json())
 
 
 app.listen(port || 3000, () => {
