@@ -100,7 +100,7 @@ router.post("/replace", async (req, res) => {
     console.log(insertQuery);
     const insertRes = await clientR.query(insertQuery);
     console.log(`insert table result: ${insertRes}`);
-    client.release();
+    clientR.release();
   } catch (err) {
     console.error(err);
     res.send("Error: " + err);
