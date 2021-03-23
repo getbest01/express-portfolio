@@ -90,6 +90,7 @@ router.post("/replace", async (req, res) => {
       console.log(insertText)
     }
     insertText.slice(0, -1); //remove last comma
+    console.log(`insert values after removing last comma: ${insertText}`)
     const client = await pool.connect();
     //delete existing data of the table
     const deleteRes = await client.query("DELETE * FROM public.transaction;");
