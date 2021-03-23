@@ -96,7 +96,7 @@ router.post("/replace", async (req, res) => {
     const deleteRes = await clientR.query("DELETE FROM public.transaction;");
     console.log(`delete table result: ${deleteRes}`);
     //replace with the new contents
-    let insertQuery = `INSERT INTO public.transaction VALUES ${insertText};`;
+    let insertQuery = `INSERT INTO public.transaction(trxid, trxtype, trxdesc, trxvalue) VALUES ${insertText};`;
     console.log(insertQuery);
     const insertRes = await clientR.query(insertQuery);
     console.log(`insert table result: ${insertRes}`);
