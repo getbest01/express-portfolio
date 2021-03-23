@@ -86,7 +86,7 @@ router.post("/replace", async (req, res) => {
     let newTrx = req.body;
     console.log("loop starts!");
     for (let i = 0; i < newTrx.length; i++) {
-      insertText += `("${newTrx[i].id}","${newTrx[i].fiscalType}","${newTrx[i].desc}", ${newTrx[i].dolValue}),`;
+      insertText += `('${newTrx[i].id}','${newTrx[i].fiscalType}','${newTrx[i].desc}', ${newTrx[i].dolValue}),`;
       console.log(insertText)
     }
     insertText = insertText.slice(0, -1); //remove last comma
