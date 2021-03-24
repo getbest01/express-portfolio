@@ -15,7 +15,10 @@ const pool = new Pool({
 });
 
 // ** MIDDLEWARE ** CORS whitelist define//
-const whitelist = ["http://localhost:3000", "https://gifted-euclid-ac446c.netlify.app"];
+const whitelist = [
+  "http://localhost:3000",
+  "https://gifted-euclid-ac446c.netlify.app",
+];
 const corsOptions = {
   origin: function (origin, callback) {
     console.log("** Origin of request " + origin);
@@ -91,10 +94,12 @@ router.post("/replace", async (req, res) => {
     const deleteRes = await clientR.query("DELETE FROM public.transaction;");
 
     //replace with the new contents
-    let insertQuery = `INSERT INTO public.transaction(trxid, trxtype, trxdesc, trxvalue) VALUES ${insertText};`;
+    if (newTrx.length > 0) {
+      let insertQuery = `INSERT INTO public.transaction(trxid, trxtype, trxdesc, trxvalue) VALUES ${insertText};`;
 
-    const insertRes = await clientR.query(insertQuery);
-    res.send("Update database successful!")
+      const insertRes = await clientR.query(insertQuery);
+    }
+    res.send("Update database successful!");
     clientR.release();
   } catch (err) {
     console.error(err);
