@@ -91,12 +91,8 @@ router.post("/replace", async (req, res) => {
     const clientR = await pool.connect();
 
     //delete existing data of the table
-    const currRowCnt = await clientR.query(
-      "SELECT COUNT(*) FROM public.transaction;"
-    );
-    if (currRowCnt > 0) {
-      const deleteRes = await clientR.query("DELETE FROM public.transaction;");
-    }
+    const deleteRes = await clientR.query("DELETE FROM public.transaction;");
+    
     //replace with the new contents
     if (newTrx.length > 0) {
       let insertQuery = `INSERT INTO public.transaction(trxid, trxtype, trxdesc, trxvalue) VALUES ${insertText};`;
