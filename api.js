@@ -99,7 +99,7 @@ router.post("/replace", async (req, res) => {
       const insertRes = await clientR.query(insertQuery);
     }
     clientR.release();
-    res.send(`${newTrx.length} transactions updated in database!`)
+    res.send(`${newTrx.length} transaction(s) remains in database!`);
   } catch (err) {
     console.error(err);
     res.send("Error: " + err);
