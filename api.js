@@ -14,27 +14,23 @@ const pool = new Pool({
   },
 });
 
-// --> Add this
-// ** MIDDLEWARE ** //
-const whitelist = ['http://localhost:3000']
+// ** MIDDLEWARE ** CORS whitelist define//
+const whitelist = ["http://localhost:3000", "https://gifted-euclid-ac446c.netlify.app/"];
 const corsOptions = {
   origin: function (origin, callback) {
-    console.log("** Origin of request " + origin)
+    console.log("** Origin of request " + origin);
     if (whitelist.indexOf(origin) !== -1 || !origin) {
-      console.log("Origin acceptable")
-      callback(null, true)
+      console.log("Origin acceptable");
+      callback(null, true);
     } else {
-      console.log("Origin rejected")
-      callback(new Error('Not allowed by CORS'))
+      console.log("Origin rejected");
+      callback(new Error("Not allowed by CORS"));
     }
-  }
-}
+  },
+};
 
-app.use(cors(corsOptions))
-//app.use(cors());
-app.use(require("body-parser").json())
-
-
+app.use(cors(corsOptions));
+app.use(require("body-parser").json());
 app.listen(port || 3000, () => {
   console.log(`Express server is running on port ${port}`);
 });
@@ -75,22 +71,21 @@ router.get("/json", (req, res) => {
 });
 */
 
-
 //Postgre database write
 router.post("/replace", async (req, res) => {
   try {
-    console.log("post start! - show body")
+    console.log("post start! - show body");
     console.log(req.body);
     let insertText = "";
 
     let newTrx = req.body;
-    console.log("loop starts!");
+
     for (let i = 0; i < newTrx.length; i++) {
       insertText += `('${newTrx[i].id}','${newTrx[i].fiscalType}','${newTrx[i].desc}', ${newTrx[i].dolValue}),`;
-      console.log(insertText)
+      console.log(insertText);
     }
     insertText = insertText.slice(0, -1); //remove last comma
-    console.log(`insert values after removing last comma: ${insertText}`)
+
     const clientR = await pool.connect();
     //delete existing data of the table
     const deleteRes = await clientR.query("DELETE FROM public.transaction;");
@@ -119,6 +114,5 @@ router.post("/replace", (req, res) => {
   }
 });
 */
-
 
 app.use(`/`, router);
