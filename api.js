@@ -17,7 +17,7 @@ const pool = new Pool({
 // ** MIDDLEWARE ** CORS whitelist define//
 const whitelist = [
   "http://localhost:3000",
-  "https://gifted-euclid-ac446c.netlify.app",
+  "https://jason-portfolio-fiscaltrace.netlify.app",
 ];
 const corsOptions = {
   origin: function (origin, callback) {
