@@ -85,18 +85,21 @@ router.post("/replace", async (req, res) => {
 
     for (let i = 0; i < newTrx.length; i++) {
       insertText += `('${newTrx[i].id}','${newTrx[i].fiscalType}','${newTrx[i].desc}', ${newTrx[i].dolValue}),`;
-      console.log(insertText);
     }
     insertText = insertText.slice(0, -1); //remove last comma
 
     const clientR = await pool.connect();
-    //delete existing data of the table
-    const deleteRes = await clientR.query("DELETE FROM public.transaction;");
 
+    //delete existing data of the table
+    const currRowCnt = await clientR.query(
+      "SELECT COUNT(*) FROM public.transaction;"
+    );
+    if (currRowCnt > 0) {
+      const deleteRes = await clientR.query("DELETE FROM public.transaction;");
+    }
     //replace with the new contents
     if (newTrx.length > 0) {
       let insertQuery = `INSERT INTO public.transaction(trxid, trxtype, trxdesc, trxvalue) VALUES ${insertText};`;
-
       const insertRes = await clientR.query(insertQuery);
     }
     res.send("Update database successful!");
