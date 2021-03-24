@@ -15,7 +15,7 @@ const pool = new Pool({
 });
 
 // ** MIDDLEWARE ** CORS whitelist define//
-const whitelist = ["http://localhost:3000", "https://gifted-euclid-ac446c.netlify.app/"];
+const whitelist = ["http://localhost:3000", "https://gifted-euclid-ac446c.netlify.app"];
 const corsOptions = {
   origin: function (origin, callback) {
     console.log("** Origin of request " + origin);
