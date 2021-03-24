@@ -102,7 +102,6 @@ router.post("/replace", async (req, res) => {
       let insertQuery = `INSERT INTO public.transaction(trxid, trxtype, trxdesc, trxvalue) VALUES ${insertText};`;
       const insertRes = await clientR.query(insertQuery);
     }
-    res.send("Update database successful!");
     clientR.release();
   } catch (err) {
     console.error(err);
