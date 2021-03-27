@@ -18,6 +18,7 @@ const pool = new Pool({
 const whitelist = [
   "http://localhost:3000",
   "https://jason-portfolio-fiscaltrace.netlify.app",
+  "http://127.0.0.1:5500/Portfolio/Portfolio1/index.html",
 ];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -64,6 +65,18 @@ router.get("/json", async (req, res) => {
   }
 });
 
+//weather api fetch
+router.get("/weather", async (req, res) => {
+  await fetch(
+    `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.body}&days=3&alerts=yes`
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => res.send(data))
+    .catch((e) => res.send(e));
+});
+
 /* for JSON file read
 let trxData;
 let rawdata = [];
@@ -92,7 +105,7 @@ router.post("/replace", async (req, res) => {
 
     //delete existing data of the table
     const deleteRes = await clientR.query("DELETE FROM public.transaction;");
-    
+
     //replace with the new contents
     if (newTrx.length > 0) {
       let insertQuery = `INSERT INTO public.transaction(trxid, trxtype, trxdesc, trxvalue) VALUES ${insertText};`;
