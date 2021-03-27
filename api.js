@@ -18,7 +18,7 @@ const pool = new Pool({
 const whitelist = [
   "http://localhost:3000",
   "https://jason-portfolio-fiscaltrace.netlify.app",
-  "http://127.0.0.1:5500/Portfolio/Portfolio1/index.html",
+  "http://127.0.0.1:5500"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
