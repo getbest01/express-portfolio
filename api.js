@@ -76,7 +76,10 @@ router.get("/weather", async (req, res) => {
       return response.json();
     })
     .then((data) => res.send(data))
-    .catch((e) => res.send(e));
+    .catch((e) => {
+      console.log(e);
+      res.send(e);
+    });
 });
 
 /* for JSON file read
