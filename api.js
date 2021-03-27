@@ -19,7 +19,7 @@ const whitelist = [
   "http://localhost:3000",
   "https://jason-portfolio-fiscaltrace.netlify.app",
   "http://127.0.0.1:5500",
-  "https://jason-portfolio-weatherapikey.netlify.app/"
+  "https://jason-portfolio-weatherapikey.netlify.app"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
