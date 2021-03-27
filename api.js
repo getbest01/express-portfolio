@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const port = process.env.PORT;
-
+const fetch = require('node-fetch');
 const app = express();
 const router = express.Router();
 
@@ -72,7 +72,7 @@ router.get("/weather", async (req, res) => {
     `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.query.city}&days=3&alerts=yes`
   )
     .then((response) => {
-      console.log(req.body)
+      console.log(req.query.city)
       return response.json();
     })
     .then((data) => res.send(data))
