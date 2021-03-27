@@ -66,10 +66,10 @@ router.get("/json", async (req, res) => {
 });
 
 //weather api fetch
-router.post("/weather", async (req, res) => {
+router.get("/weather", async (req, res) => {
   console.log(req);
   await fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.body}&days=3&alerts=yes`
+    `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.query.city}&days=3&alerts=yes`
   )
     .then((response) => {
       console.log(req.body)
