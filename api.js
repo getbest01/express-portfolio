@@ -35,7 +35,7 @@ const corsOptions = {
 };
 
 //app setting
-app.use(`/`, router);
+
 app.use(cors(corsOptions));
 app.use(require("body-parser").json());
 app.listen(port || 3000, () => {
@@ -103,6 +103,7 @@ router.get("/weather", async (req, res) => {
     });
 });
 
+app.use(`/`, router);
 
 /* Fiscaltrace - for JSON file read
 let trxData;
