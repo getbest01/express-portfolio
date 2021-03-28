@@ -2,7 +2,7 @@ const express = require("express");
 const cors = require("cors");
 const fs = require("fs");
 const port = process.env.PORT;
-const fetch = require('node-fetch');
+const fetch = require("node-fetch");
 const app = express();
 const router = express.Router();
 
@@ -19,7 +19,7 @@ const whitelist = [
   "http://localhost:3000",
   "https://jason-portfolio-fiscaltrace.netlify.app",
   "http://127.0.0.1:5500",
-  "https://jason-portfolio-weatherapikey.netlify.app"
+  "https://jason-portfolio-weatherapikey.netlify.app",
 ];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -34,25 +34,15 @@ const corsOptions = {
   },
 };
 
+//app setting
+app.use(`/`, router);
 app.use(cors(corsOptions));
 app.use(require("body-parser").json());
 app.listen(port || 3000, () => {
   console.log(`Express server is running on port ${port}`);
 });
 
-router.get("/", (req, res) => {
-  const client = pool.connect();
-  res.send("Connected to DB");
-  client.query("SELECT * FROM public.transaction;", (err, res) => {
-    if (err) throw err;
-    for (let row of res.rows) {
-      console.log(JSON.stringify(row));
-    }
-    client.release();
-  });
-});
-
-//Postgre database read
+//Fiscaltrace - Postgre database read
 router.get("/json", async (req, res) => {
   try {
     const client = await pool.connect();
@@ -66,33 +56,7 @@ router.get("/json", async (req, res) => {
   }
 });
 
-//weather api fetch from weatherapi.com
-router.get("/weather", async (req, res) => {
-  await fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.query.city}&days=3&alerts=yes`
-  )
-    .then((response) => {
-      console.log(req.query.city)
-      return response.json();
-    })
-    .then((data) => res.send(data))
-    .catch((e) => {
-      console.log(e);
-      res.send(e);
-    });
-});
-
-/* for JSON file read
-let trxData;
-let rawdata = [];
-router.get("/json", (req, res) => {
-  let rawdata = fs.readFileSync("./JSON/transactions.json");
-  let trxData = JSON.parse(rawdata);
-  res.send(trxData);
-});
-*/
-
-//Postgre database write
+//Fiscaltrace - Postgre database write
 router.post("/replace", async (req, res) => {
   try {
     console.log("post start! - show body");
@@ -124,7 +88,34 @@ router.post("/replace", async (req, res) => {
   }
 });
 
-/* for JSON file write
+//weather api fetch from weatherapi.com
+router.get("/weather", async (req, res) => {
+  await fetch(
+    `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.query.city}&days=3&alerts=yes`
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => res.send(data))
+    .catch((e) => {
+      console.log(e);
+      res.send(e);
+    });
+});
+
+
+/* Fiscaltrace - for JSON file read
+let trxData;
+let rawdata = [];
+router.get("/json", (req, res) => {
+  let rawdata = fs.readFileSync("./JSON/transactions.json");
+  let trxData = JSON.parse(rawdata);
+  res.send(trxData);
+});
+*/
+
+
+/*  Fiscaltrace - for JSON file write
 router.post("/replace", (req, res) => {
   console.log(req.body);
   let newTrx = JSON.parse(req.body);
@@ -136,5 +127,3 @@ router.post("/replace", (req, res) => {
   }
 });
 */
-
-app.use(`/`, router);
