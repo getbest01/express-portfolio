@@ -88,10 +88,25 @@ router.post("/replace", async (req, res) => {
   }
 });
 
-//weather api fetch from weatherapi.com
+//weather api fetch from weatherapi.com - query with city name
 router.get("/weather", async (req, res) => {
   await fetch(
     `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.query.city}&days=3&alerts=yes`
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => res.send(data))
+    .catch((e) => {
+      console.log(e);
+      res.send(e);
+    });
+});
+
+//weather api fetch from weatherapi.com - query with geo loc
+router.get("/weathergeo", async (req, res) => {
+  await fetch(
+    `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.query.geo}&days=3&alerts=yes`
   )
     .then((response) => {
       return response.json();
