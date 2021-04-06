@@ -106,7 +106,7 @@ router.get("/weather", async (req, res) => {
 //weather api fetch from weatherapi.com - query with geo loc
 router.get("/weathergeo", async (req, res) => {
   await fetch(
-    `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.query.geo}&days=14&alerts=yes`
+    `http://api.weatherapi.com/v1/forecast.json?key=${process.env.WEATHERAPI_KEY}&q=${req.query.geo}&days=10&alerts=yes`
   )
     .then((response) => {
       return response.json();
