@@ -21,7 +21,6 @@ const whitelist = [
   "http://127.0.0.1:5500",
   "https://jason-portfolio-weatherapikey.netlify.app",
   "https://jason-portfolio-currweather.netlify.app",
-
 ];
 const corsOptions = {
   origin: function (origin, callback) {
@@ -120,6 +119,22 @@ router.get("/weathergeo", async (req, res) => {
     });
 });
 
+//test using actual API key
+//PGA tournament list api fetch from sportsdata.io - query with season
+router.get("/pga-tourlist", async (req, res) => {
+  await fetch(
+    `https://fly.sportsdata.io/golf/v2/json/Tournaments/${req.query.season}/?key=${process.env.PGAIO_KEY}`
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => res.send(data))
+    .catch((e) => {
+      console.log(e);
+      res.send(e);
+    });
+});
+
 app.use(`/`, router);
 
 /* Fiscaltrace - for JSON file read
@@ -131,7 +146,6 @@ router.get("/json", (req, res) => {
   res.send(trxData);
 });
 */
-
 
 /*  Fiscaltrace - for JSON file write
 router.post("/replace", (req, res) => {
