@@ -126,7 +126,7 @@ router.get("/pga-tourlist", async (req, res) => {
     `https://fly.sportsdata.io/golf/v2/json/Tournaments/${req.query.season}/?key=${process.env.PGAIO_KEY}`
   )
     .then((response) => {
-      return response.json();
+      return response;
     })
     .then((data) => res.send(data))
     .catch((e) => {
