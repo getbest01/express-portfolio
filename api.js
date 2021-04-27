@@ -123,7 +123,7 @@ router.get("/weathergeo", async (req, res) => {
 //PGA tournament list api fetch from sportsdata.io - query with season
 router.get("/pga-tourlist", async (req, res) => {
   await fetch(
-    `https://fly.sportsdata.io/golf/v2/json/Tournaments/${req.query.season}/?key=${process.env.PGAIO_KEY}`
+    `https://fly.sportsdata.io/golf/v2/json/Tournaments/${req.query.season}?key=${process.env.PGAIO_KEY}`
   )
     .then((response) => {
       return response.json();
