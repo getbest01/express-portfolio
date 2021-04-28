@@ -136,6 +136,7 @@ router.get("/pga-tourlist", async (req, res) => {
 
 //PGA Leaderboard api fetch from sportsdata.io - query with tournament id
 router.get("/pga-leaderboard", async (req, res) => {
+  console.log(req.query.tourId);
   await fetch(
     `https://fly.sportsdata.io/golf/v2/json/Leaderboard/${req.query.tourId}?key=${process.env.PGAIO_KEY}`
   )
