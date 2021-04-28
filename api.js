@@ -119,11 +119,25 @@ router.get("/weathergeo", async (req, res) => {
     });
 });
 
-//test using actual API key
 //PGA tournament list api fetch from sportsdata.io - query with season
 router.get("/pga-tourlist", async (req, res) => {
   await fetch(
     `https://fly.sportsdata.io/golf/v2/json/Tournaments/${req.query.season}?key=${process.env.PGAIO_KEY}`
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => res.send(data))
+    .catch((e) => {
+      console.log(e);
+      res.send(e);
+    });
+});
+
+//PGA Leaderboard api fetch from sportsdata.io - query with tournament id
+router.get("/pga-leaderboard", async (req, res) => {
+  await fetch(
+    `https://fly.sportsdata.io/golf/v2/json/Leaderboard/${req.query.tourId}?key=${process.env.PGAIO_KEY}`
   )
     .then((response) => {
       return response.json();
