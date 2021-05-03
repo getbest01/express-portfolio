@@ -150,6 +150,21 @@ router.get("/pga-leaderboard", async (req, res) => {
     });
 });
 
+//PGA Leaderboard api fetch from sportsdata.io - News
+router.get("/pga-news", async (req, res) => {
+  await fetch(
+    `https://fly.sportsdata.io/golf/v2/json/News?key=${process.env.PGAIO_KEY}`
+  )
+    .then((response) => {
+      return response.json();
+    })
+    .then((data) => res.send(data))
+    .catch((e) => {
+      console.log(e);
+      res.send(e);
+    });
+});
+
 app.use(`/`, router);
 
 /* Fiscaltrace - for JSON file read
