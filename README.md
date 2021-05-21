@@ -15,8 +15,7 @@
     > ---   |   ---  |   --- |   --- |
     > Fiscal Trace   |   /json   |   NA   |   Initial load from database   |
     >  |  |   /replace   |   all fiscal data   |   replace existing data with submited data   |
-    >    Weather   |   /weather   |   city, # of days, alert   | fetch weather data by city   |
-    > |   |   /weathergeo   |   latitude, longitude, # of days, alert   | fetch weather data by current geolocation   |
+    >  Weather   |   /weathergeo   |   latitude, longitude, # of days, alert   | fetch weather data by current geolocation   |
     > PGA Tour   |   /pga-tourlist   |   season   |   fetch PGA tour schedule by season |
     > |   |   pga-leaderboard   |   tourID   | fetch PGA tour leaderboard by tour ID   |
     > |   |   pga-news   | NA   | fetch most recent PGA news   |
