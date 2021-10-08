@@ -18,12 +18,18 @@ const pool = new Pool({
 });
 
 //MongoDB
-const mongoPool = new Pool({
-  connectionString: process.env.MONGODB_URI,
-  ssl: {
-    rejectUnauthorized: false,
-  },
-});
+try {
+  // Connect to the MongoDB cluster
+   mongoose.connect(
+    process.env.MONGODB_URI,
+    { useNewUrlParser: true, useUnifiedTopology: true },
+    () => console.log(" Mongoose is connected")
+  );
+
+} catch (e) {
+  console.log("could not connect");
+}
+
 
 // ** MIDDLEWARE ** CORS whitelist define//
 const whitelist = [
