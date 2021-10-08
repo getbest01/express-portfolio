@@ -7,8 +7,19 @@ const app = express();
 const router = express.Router();
 
 const { Pool } = require("pg");
+
+
+//PostGRE
 const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
+  ssl: {
+    rejectUnauthorized: false,
+  },
+});
+
+//MongoDB
+const mongoPool = new Pool({
+  connectionString: process.env.MONGODB_URI,
   ssl: {
     rejectUnauthorized: false,
   },
