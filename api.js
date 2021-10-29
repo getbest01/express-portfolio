@@ -38,6 +38,7 @@ const whitelist = [
   "https://jason-portfolio-weatherapikey.netlify.app",
   "https://jason-portfolio-currweather.netlify.app",
   "https://jason-portfolio-pgatour.netlify.app",
+  "https://jason-portfolio-kijijo.netlify.app"
 ];
 const corsOptions = {
   origin: function (origin, callback) {
