@@ -5,9 +5,9 @@ const port = process.env.PORT;
 const fetch = require("node-fetch");
 const app = express();
 const router = express.Router();
+const mongoose = require("mongoose");
 
 const { Pool } = require("pg");
-
 
 //PostGRE
 const pool = new Pool({
@@ -20,22 +20,21 @@ const pool = new Pool({
 //MongoDB
 try {
   // Connect to the MongoDB cluster
-   mongoose.connect(
+  mongoose.connect(
     process.env.MONGODB_URI,
     { useNewUrlParser: true, useUnifiedTopology: true },
     () => console.log(" Mongoose is connected")
   );
-
 } catch (e) {
-  console.log("could not connect");
+  console.log("MongoDB could not connect");
 }
-
 
 // ** MIDDLEWARE ** CORS whitelist define//
 const whitelist = [
-  "http://localhost:3000",
+  //"http://localhost:3000",
+  //"http://localhost:3001",
+  //"http://127.0.0.1:5500",
   "https://jason-portfolio-fiscaltrace.netlify.app",
-  "http://127.0.0.1:5500",
   "https://jason-portfolio-weatherapikey.netlify.app",
   "https://jason-portfolio-currweather.netlify.app",
   "https://jason-portfolio-pgatour.netlify.app",
@@ -58,7 +57,7 @@ const corsOptions = {
 app.use(cors(corsOptions));
 app.use(require("body-parser").json());
 app.listen(port || 3000, () => {
-  console.log(`Express server is running on port ${port}`);
+  console.log(`Express server is running on port ${port || "3000"}`);
 });
 
 //Fiscaltrace - Postgre database read
@@ -182,6 +181,183 @@ router.get("/pga-news", async (req, res) => {
       res.send(e);
     });
 });
+
+//Kijijo db transactions =====================================================
+
+//schema definition
+const userSchema = new mongoose.Schema({
+  name: String,
+  user_name: String,
+  password: String,
+  age: String,
+});
+
+const prodSchema = new mongoose.Schema({
+  title: String,
+  desc: String,
+  category: String,
+  price: Number,
+  register_user: String
+});
+
+//models for collections
+const User = mongoose.model("users", userSchema);
+const Prod = mongoose.model("products", prodSchema);
+
+//Kijijo db query testing
+router.get("/mongo", async (req, res) => {
+  try {
+    User.find({}, { name: 1, password: 1, _id: 0 }, (err, data) => {
+      res.send(data);
+    });
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
+});
+
+//Kijijo user login
+router.post("/mongoLogin", async (req, res) => {
+  try {
+    console.log(req.body);
+
+    User.find(
+      { user_name: req.body.user_name, password: req.body.password },
+      { name: 1, password: 1, _id: 0 },
+      (err, data) => {
+        res.send(data);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
+});
+
+//Kijijo user add
+router.post("/mongoUserAdd", async (req, res) => {
+  try {
+    console.log(req.body);
+
+    const user1 = new User({
+      name: req.body.fullname,
+      user_name: req.body.user_name,
+      password: req.body.password,
+      age: req.body.age,
+    });
+
+    User.find(
+      { user_name: req.body.user_name },
+      { user_name: 1, _id: 0 },
+      (err, data) => {
+        if (data.length <= 0) {
+          user1.save((err, data) => {
+            if (err) res.send(err);
+            else res.send(data);
+          });
+        } else res.send("already exists");
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
+});
+
+//Kijijo prod query
+router.get("/mongoProdQry", async (req, res) => {
+  const re = new RegExp(req.query.searchStr, "i");
+  const qryStr =
+    (await req.query.searchStr) === ""
+      ? {}
+      : { $or: [{ desc: re }, { title: re }] };
+  try {
+    Prod.find(qryStr, (err, data) => {
+      res.send(data);
+    });
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
+});
+
+//Kijijo product add
+router.post("/mongoProductLoad", async (req, res) => {
+  try {
+    console.log(req.body);
+
+    const prod1 = new Prod({
+      title: req.body.title,
+      desc: req.body.desc,
+      category: req.body.category,
+      price: req.body.price,
+      register_user: req.body.register_user
+    });
+
+    Prod.find({ title: req.body.title }, { title: 1, _id: 0 }, (err, data) => {
+      if (data.length <= 0) {
+        prod1.save((err, data) => {
+          if (err) res.send(err);
+          else res.send(data);
+        });
+      } else res.send("already exists");
+    });
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
+});
+
+//Kijijo product update
+router.post("/mongoProductUpdate", async (req, res) => {
+  try {
+    console.log(req.body);
+
+    const prod1 = new Prod({
+      title: req.body.title,
+      desc: req.body.desc,
+      category: req.body.category,
+      price: req.body.price,
+
+    });
+
+    const filter = { _id: req.body.id };
+    const update = {
+      title: req.body.title,
+      desc: req.body.desc,
+      category: req.body.category,
+      price: req.body.price,
+
+    };
+
+    Prod.findOneAndUpdate(filter, update, (err, data) => {
+      if (err) res.send(err);
+      else res.send(data);
+    });
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
+});
+
+//Kijijo db delete testing
+router.post("/mongoDelete", async (req, res) => {
+  console.log(req.body)
+  try {
+    Prod.deleteOne(
+      { _id: req.body.id },
+      (err, data) => {
+        if (err) res.send("DeleteErr", err);
+        res.send(data);
+      }
+    );
+  } catch (err) {
+    console.error(err);
+    res.send("Error: " + err);
+  }
+});
+
+//Kijijo db transactions =====================================================
 
 app.use(`/`, router);
 
